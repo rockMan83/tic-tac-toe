@@ -12,16 +12,18 @@ def initialize():  #Get player names and their characters
     global player2
     global winner_name
     global loser_name
-    name1 = winner_name = input('Hello Player 1.  What is your name? ')
-    player1 = input(f'\nHi {name1}. Do you want to be X or O?').upper()
+    name1 = winner_name = input('Hello Player 1.  What is your name?\n')
+    # name1 = input('Hello Player 1.  What is your name? ')
+    player1 = input(f'\nHi {name1}. Do you want to be X or O?\n').upper()
     while player1 not in ('X', 'O'):
-        player1 = input('\nDon\'t be cheeky.  X or O?').upper()
+        player1 = input('\nDon\'t be cheeky.  X or O?\n').upper()
     if player1 == 'X':
         player2 = 'O'
     else:
         player2 = 'X'
-    name2 = loser_name = input('\nAnd hello Player 2.  What is your name? ')
-    print(f'\nNice to meet you {name1} and {name2}!. {name1} chose {player1}, so {name2} will be {player2}.')
+    name2 = loser_name = input('\nAnd hello Player 2.  What is your name?\n')
+    # name2 = input('\nAnd hello Player 2.  What is your name? ')
+    print(f'\nNice to meet you {name1} and {name2}! {name1} chose {player1}, so {name2} will be {player2}.')
     print(f'\nOK. Let\'s play Tic-Tac-Toe! \n{name1} goes first.\n')
 
 
@@ -155,16 +157,15 @@ def play_again():
     global loser_name
     global game_over
     again = input('Would you like to play again? (type \'y\' or anything else to quit)\n').lower()
-    print('')
     if again in ('y', 'yes'):
         reset = [[1, 2, 3],
                  [4, 5, 6],
                  [7, 8, 9]]
         rematch = input('Rematch? (type \'y\' or \'n\')\n').lower()
         if rematch in ('y', 'yes'):
-            print('\nOne mo\' gain!\nWinner goes first.\n')
+            print(f'\nOne mo\' gain!\nWinner ({winner_name}) goes first.\n')
             blah = reset
-            game_over = False
+            # game_over = False
         else:
             name3 = input('\nNEW CHALLENGER!  What is your name? \n')
             winner_continue = input(f'\n{winner_name}, Do you want to continue? (type \'y\' or \'n\')\n').lower()
@@ -182,15 +183,6 @@ def play_again():
             print(f'\nWelcome {name3}, you will be {player3}\n')
             blah = reset
     else:
-        print('\nGAME OVER\n')
-        print(f'Final Score:\n{name1} {str(p1_win)} wins, {str(p1_loss)} losses')
-        print(f'{name2} {str(p2_win)} wins, {str(p2_loss)} losses')
-        if name3 in (winner_name, loser_name):
-            print(f'{name3} {str(p3_win)} wins, {str(p3_loss)} losses\n')
-        else:
-            print('')
-            print(f'Goodbye {winner_name} and {loser_name}.\nTHANKS FOR PLAYING!\nBrought to you by '
-                  f'Nintendo of Monterey Park')
         play = False
 
 
@@ -205,29 +197,55 @@ def do_round_p1vsp2(board):
     global loser_player
     global game_over
     while not game_over:
-        p1_turn(board)
-        if tic_tac_toe(board):
-            p1_win += 1
-            p2_loss += 1
-            draw_board(board)
-            print(f'\nTic-Tac-Toe, Three-in-a-row!\n{name1} is the winner!\n')
-            print(f'Current Score:\n{name1} {str(p1_win)} wins, {str(p1_loss)} losses')
-            print(f'{name2} {str(p2_win)} wins, {str(p2_loss)} losses\n')
-            winner_name = name1
-            winner_player = player1
-            loser_name = name2
-            loser_player = player2
-            game_over = True
-        elif cats_game(board):
-            draw_board(board)
-            print('\nCat\'s Game. Wonk Wonk')
-            print(f'\nCurrent Score:\n{name1} {str(p1_win)} wins, {str(p1_loss)} losses')
-            print(f'{name2} {str(p2_win)} wins, {str(p2_loss)} losses\n')
-            winner_name = name2
-            winner_player = player2
-            loser_name = name1
-            loser_player = player1
-            game_over = True
+        if winner_name == name1:
+            p1_turn(board)
+            if tic_tac_toe(board):
+                p1_win += 1
+                p2_loss += 1
+                draw_board(board)
+                print(f'\nTic-Tac-Toe, Three-in-a-row!\n{name1} is the winner!\n')
+                print(f'Current Score:\n{name1} {str(p1_win)} wins, {str(p1_loss)} losses')
+                print(f'{name2} {str(p2_win)} wins, {str(p2_loss)} losses\n')
+                winner_name = name1
+                winner_player = player1
+                loser_name = name2
+                loser_player = player2
+                game_over = True
+                break
+            elif cats_game(board):
+                draw_board(board)
+                print('\nCat\'s Game. Wonk Wonk')
+                print(f'\nCurrent Score:\n{name1} {str(p1_win)} wins, {str(p1_loss)} losses')
+                print(f'{name2} {str(p2_win)} wins, {str(p2_loss)} losses\n')
+                winner_name = name2
+                winner_player = player2
+                loser_name = name1
+                loser_player = player1
+                game_over = True
+                break
+            p2_turn(board)
+            if tic_tac_toe(board):
+                p2_win += 1
+                p1_loss += 1
+                draw_board(board)
+                print(f'\nTic-Tac-Toe, Three-in-a-row!\n{name2} is the winner!\n')
+                print(f'Current Score:\n{name1} {str(p1_win)} wins, {str(p1_loss)} losses')
+                print(f'{name2} {str(p2_win)} wins, {str(p2_loss)} losses\n')
+                winner_name = name2
+                winner_player = player2
+                loser_name = name1
+                loser_player = player1
+                game_over = True
+            elif cats_game(board):
+                draw_board(board)
+                print('\nCat\'s Game. Wonk Wonk')
+                print(f'\nCurrent Score:\n{name1} {str(p1_win)} wins, {str(p1_loss)} losses')
+                print(f'{name2} {str(p2_win)} wins, {str(p2_loss)} losses\n')
+                winner_name = name2
+                winner_player = player2
+                loser_name = name1
+                loser_player = player1
+                game_over = True
         else:
             p2_turn(board)
             if tic_tac_toe(board):
@@ -241,6 +259,31 @@ def do_round_p1vsp2(board):
                 winner_player = player2
                 loser_name = name1
                 loser_player = player1
+                game_over = True
+                break
+            elif cats_game(board):
+                draw_board(board)
+                print('\nCat\'s Game. Wonk Wonk')
+                print(f'\nCurrent Score:\n{name1} {str(p1_win)} wins, {str(p1_loss)} losses')
+                print(f'{name2} {str(p2_win)} wins, {str(p2_loss)} losses\n')
+                winner_name = name2
+                winner_player = player2
+                loser_name = name1
+                loser_player = player1
+                game_over = True
+                break
+            p1_turn(board)
+            if tic_tac_toe(board):
+                p1_win += 1
+                p2_loss += 1
+                draw_board(board)
+                print(f'\nTic-Tac-Toe, Three-in-a-row!\n{name1} is the winner!\n')
+                print(f'Current Score:\n{name1} {str(p1_win)} wins, {str(p1_loss)} losses')
+                print(f'{name2} {str(p2_win)} wins, {str(p2_loss)} losses\n')
+                winner_name = name1
+                winner_player = player1
+                loser_name = name2
+                loser_player = player2
                 game_over = True
             elif cats_game(board):
                 draw_board(board)
@@ -556,4 +599,12 @@ play = True
 initialize()
 while play:
     do_round_p1vsp2(blah)
+print('\nGAME OVER\n')
+print(f'Final Score:\n{name1} {str(p1_win)} wins, {str(p1_loss)} losses')
+print(f'{name2} {str(p2_win)} wins, {str(p2_loss)} losses')
+if name3 in (winner_name, loser_name):
+    print(f'{name3} {str(p3_win)} wins, {str(p3_loss)} losses\n')
+else:
+    print(f'\nGoodbye {winner_name} and {loser_name}.\nTHANKS FOR PLAYING!\nBrought to you by '
+          f'Nintendo of Monterey Park')
 
